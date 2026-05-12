@@ -14,7 +14,7 @@ func noteView(w http.ResponseWriter, r *http.Request) {
 
 }
 func noteCreate(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("AlloNIGGAw", "POST")
+	w.Header().Set("Allow", "POST")
 
 	if r.Method != "POST" {
 		//reject the request
