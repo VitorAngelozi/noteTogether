@@ -16,10 +16,9 @@ func noteView(w http.ResponseWriter, r *http.Request) {
 func noteCreate(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Allow", "POST")
 
-	if r.Method != "POST" {
+	if r.Method != http.MethodPost {
 		//reject the request
-		w.WriteHeader(405)
-		fmt.Fprint(w, "Method not allowed!")
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
 	fmt.Fprint(w, "Creating notes")
