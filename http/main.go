@@ -2,19 +2,21 @@ package main
 
 import (
 	"fmt"
+	"html/template"
 	"net/http"
 )
 
 func noteList(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "Listing notes")
+	t, err := template.ParseFiles("views/templates/home.html")
+	if err != nil {
+		http.Error(w, "An error had been found", http.StatusInternalServerError)
+	}
+	t.Execute(w, nil)
 }
 func noteView(w http.ResponseWriter, r *http.Request) {
 
-	fmt.Fprint(w, "Showing notes")
-
 }
 func noteCreate(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Allow", "POST")
 
 	if r.Method != http.MethodPost {
 		//reject the request
