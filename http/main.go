@@ -7,23 +7,30 @@ import (
 )
 
 func noteList(w http.ResponseWriter, r *http.Request) {
-	t, err := template.ParseFiles("views/templates/home.html")
+	t, err := template.ParseFiles("../views/templates/home.html")
 	if err != nil {
 		http.Error(w, "An error had been found", http.StatusInternalServerError)
+		return
 	}
 	t.Execute(w, nil)
 }
 func noteView(w http.ResponseWriter, r *http.Request) {
+	t, err := template.ParseFiles("../views/templates/noteView.html")
+	if err != nil {
+		http.Error(w, "An error had been found", http.StatusInternalServerError)
+		return
+	}
+	t.Execute(w, nil)
 
 }
 func noteCreate(w http.ResponseWriter, r *http.Request) {
 
-	if r.Method != http.MethodPost {
-		//reject the request
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+	t, err := template.ParseFiles("../views/templates/home.html")
+	if err != nil {
+		http.Error(w, "An error had been found", http.StatusInternalServerError)
 		return
 	}
-	fmt.Fprint(w, "Creating notes")
+	t.Execute(w, nil)
 
 }
 
