@@ -1,0 +1,93 @@
+:root {
+    --bg-top: #f3f6ff;
+    --bg-bottom: #eef8f2;
+    --panel: #ffffff;
+    --text: #1f2937;
+    --muted: #5a6475;
+    --accent: #145b9e;
+    --accent-soft: #e8f1fb;
+    --border: #d9e3f3;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: "Inter", "Segoe UI", sans-serif;
+    color: var(--text);
+    background: linear-gradient(160deg, var(--bg-top), var(--bg-bottom));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+.app-shell {
+    width: 100%;
+    max-width: 760px;
+}
+
+.brand-header {
+    text-align: center;
+    margin-bottom: 18px;
+}
+
+.brand-logo {
+    margin: 0;
+    font-family: "Indie Flower", cursive;
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    color: var(--accent);
+    line-height: 1;
+}
+
+.brand-tagline {
+    margin: 8px 0 0;
+    color: var(--muted);
+    font-size: 0.98rem;
+}
+
+.panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 10px 24px rgba(31, 41, 55, 0.08);
+}
+
+.panel h2 {
+    margin-top: 0;
+}
+
+.panel p {
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+.actions {
+    margin-top: 18px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    display: inline-block;
+    text-decoration: none;
+    background: var(--accent);
+    color: #ffffff;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-weight: 600;
+}
+
+.btn:hover {
+    filter: brightness(0.95);
+}
+
+.btn.btn-muted {
+    background: var(--accent-soft);
+    color: var(--accent);
+}
