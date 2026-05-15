@@ -2,71 +2,32 @@ package main
 
 import (
 	"fmt"
-	"html/template"
+	"log"
 	"net/http"
 	"os"
-	"path/filepath"
+
+	"github.com/VitorAngelozi/quickNotes/internal/server"
+	"github.com/joho/godotenv"
 )
 
-type pageData struct {
-	Title string
-	Note  string
-}
-
-func renderTemplate(w http.ResponseWriter, page string, data pageData) {
-	baseDir := resolveViewsDir()
-	files := []string{
-		filepath.Join(baseDir, "templates", "layouts", "base.html"),
-		filepath.Join(baseDir, "templates", "partials", "brand.html"),
-		filepath.Join(baseDir, "templates", "pages", page),
-	}
-
-	t, err := template.ParseFiles(files...)
-	if err != nil {
-		http.Error(w, "An error had been found", http.StatusInternalServerError)
-		return
-	}
-
-	if err := t.ExecuteTemplate(w, "base", data); err != nil {
-		http.Error(w, "An error had been found", http.StatusInternalServerError)
-	}
-}
-
-func resolveViewsDir() string {
-	candidates := []string{"views", "../views"}
-	for _, c := range candidates {
-		if info, err := os.Stat(c); err == nil && info.IsDir() {
-			return c
-		}
-	}
-	return "views"
-}
-
-func noteList(w http.ResponseWriter, r *http.Request) {
-	renderTemplate(w, "home.html", pageData{Title: "Note Together"})
-}
-
-func noteView(w http.ResponseWriter, r *http.Request) {
-	renderTemplate(w, "note-view.html", pageData{
-		Title: "Note Together | View Note",
-		Note:  "",
-	})
-}
-
-func noteCreate(w http.ResponseWriter, r *http.Request) {
-	renderTemplate(w, "note-create.html", pageData{Title: "Note Together | Create Note"})
-}
-
 func main() {
-	fmt.Println("Rodando porta 5000")
-	mux := http.NewServeMux()
+	_ = godotenv.Load(".env", "http/.env")
 
-	staticFiles := http.FileServer(http.Dir(filepath.Join(resolveViewsDir(), "static")))
-	mux.Handle("/static/", http.StripPrefix("/static/", staticFiles))
+	host := getenv("HOST", "127.0.0.1")
+	port := getenv("PORT", "8080")
+	addr := fmt.Sprintf("%s:%s", host, port)
 
-	mux.HandleFunc("/", noteList)
-	mux.HandleFunc("/note/view", noteView)
-	mux.HandleFunc("/note/create", noteCreate)
-	http.ListenAndServe(":5000", mux)
+	mux := server.NewMux()
 
+	log.Printf("server listening on http://%s", addr)
+	if err := http.ListenAndServe(addr, mux); err != nil {
+		log.Fatalf("server failed: %v", err)
+	}
+}
+
+func getenv(key, fallback string) string {
+	if value := os.Getenv(key); value != "" {
+		return value
+	}
+	return fallback
 }
